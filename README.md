@@ -30,7 +30,7 @@ Some suites fail on a fresh checkout. That is the point: each exercise below tel
   test passes but the behaviour is wrong, that counts against you, not for you.
 - **Record assumptions in `NOTES.md`.** If a requirement could be read more than one way,
   write down which reading you chose and why. A short line is enough.
-- **Commit as you go.** One commit per exercise at minimum. We read the history.
+- **Commit as you go.** One commit per exercise at minimum, one per finding in Exercise 3. We read the history.
 - **Don't edit the tests** unless an exercise tells you to.
 - Exercise 1 is done without AI tools. Every other exercise, use whatever you normally use.
 - Talk through what you're doing as you go.
@@ -64,7 +64,7 @@ npm run ex2
 Before you write or generate any code, produce a plan and walk us through it. Then build it.
 The tests cover the basics. They do not cover everything the requirement implies.
 
-## Exercise 3: review the share-note branch
+## Exercise 3: make the share-note branch mergeable
 
 Someone ran an AI agent on this repo overnight and it produced the `feature/share-note`
 branch: share a note with anyone via a link, across backend, mobile and web. Its tests pass.
@@ -77,12 +77,13 @@ npm run ex3
 The branch was cut from the original `main`, so your Exercise 1 and 2 work is not on it and
 those suites still fail there. Only `npm run ex3` matters on this branch.
 
-Review it as if it were a pull request to production.
+Treat it as a pull request to production that has landed on your desk.
 
-- Fill in `REVIEW.md` on that branch: what you found, what you changed, and whether you
-  would merge it.
-- Fix what you would fix before merging. Commit on the branch.
-- If you would not merge it at all, say why in `REVIEW.md`.
+- Fix what you would insist on before merging. **One commit per finding.** The commit message
+  says what was wrong and why it matters.
+- Add the tests that should have been there.
+- Anything you noticed but chose not to fix, say so out loud.
+- If you would reject the branch outright, say that and why.
 
 ## Exercise 4 (bonus): fix the summarization function
 
