@@ -74,6 +74,9 @@ git checkout feature/share-note
 npm run ex3
 ```
 
+The branch was cut from the original `main`, so your Exercise 1 and 2 work is not on it and
+those suites still fail there. Only `npm run ex3` matters on this branch.
+
 Review it as if it were a pull request to production.
 
 - Fill in `REVIEW.md` on that branch: what you found, what you changed, and whether you
