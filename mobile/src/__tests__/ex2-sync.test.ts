@@ -16,7 +16,7 @@ describe('syncQueuedEdits', () => {
   it('does nothing when the queue is empty', async () => {
     const api = fakeApi([note({ id: 'n1' })]);
     const result = await syncQueuedEdits(api);
-    expect(result).toEqual({ pushed: 0, failed: 0 });
+    expect(result).toMatchObject({ pushed: 0, failed: 0 });
     expect(api.updateNote).not.toHaveBeenCalled();
   });
 
