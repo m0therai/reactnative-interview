@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import type { ApiClient } from '../api/client';
+import { ShareNoteButton } from '../components/ShareNoteButton';
 import type { Note } from '../types';
 
 export type NoteDraft = { title: string; content: string };
@@ -7,9 +9,12 @@ export type NoteDraft = { title: string; content: string };
 type Props = {
   note: Note;
   onSave: (draft: NoteDraft) => void;
+  /** Needed for sharing. Optional so the editor still works in flows without a session. */
+  api?: ApiClient;
+  currentUserId?: string;
 };
 
-export function NoteEditorScreen({ note, onSave }: Props) {
+export function NoteEditorScreen({ note, onSave, api, currentUserId }: Props) {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const dirty = title !== note.title || content !== note.content;
@@ -41,6 +46,7 @@ export function NoteEditorScreen({ note, onSave }: Props) {
       >
         <Text style={styles.buttonText}>Save</Text>
       </Pressable>
+      {api && currentUserId && <ShareNoteButton api={api} noteId={note.id} userId={currentUserId} />}
     </View>
   );
 }

@@ -1,14 +1,16 @@
 import { FormEvent, useState } from 'react';
 import type { ApiClient } from '../api/client';
 import type { Note } from '../types';
+import { ShareNoteButton } from './ShareNoteButton';
 
 type Props = {
   api: ApiClient;
   note: Note;
   onSaved?: (note: Note) => void;
+  currentUserId?: string;
 };
 
-export function NoteEditor({ api, note: initial, onSaved }: Props) {
+export function NoteEditor({ api, note: initial, onSaved, currentUserId }: Props) {
   const [note, setNote] = useState(initial);
   const [title, setTitle] = useState(initial.title);
   const [content, setContent] = useState(initial.content);
@@ -51,6 +53,7 @@ export function NoteEditor({ api, note: initial, onSaved }: Props) {
       <textarea aria-label="Content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write something…" rows={12} />
       <div className="editor-footer">
         <span className="editor-meta">v{note.version}</span>
+        {currentUserId && <ShareNoteButton api={api} noteId={note.id} userId={currentUserId} />}
         <button type="submit" disabled={!dirty || saving}>
           {saving ? 'Saving…' : 'Save'}
         </button>

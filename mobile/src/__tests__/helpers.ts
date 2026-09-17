@@ -27,5 +27,9 @@ export function fakeApi(notes: Note[] = []): jest.Mocked<ApiClient> {
       Object.assign(n, updated);
       return { status: 200, body: updated };
     }),
+    shareNote: jest.fn(async ({ noteId }) => ({
+      url: `https://notes.example.com/s/${noteId}-token`,
+      expires_at: '2026-09-24T09:00:00.000Z',
+    })),
   };
 }

@@ -9,10 +9,14 @@ export type UpdateNoteInput = {
 
 export type ApiResponse<T> = { status: number; body: T };
 
+export type ShareNoteInput = { noteId: string; userId: string };
+export type ShareLink = { url: string; expires_at: string };
+
 export type ApiClient = {
   listNotes(): Promise<Note[]>;
   getNote(id: string): Promise<Note>;
   updateNote(input: UpdateNoteInput): Promise<ApiResponse<Note | { error: string; current?: Note }>>;
+  shareNote(input: ShareNoteInput): Promise<ShareLink>;
 };
 
 /**
@@ -36,6 +40,15 @@ export function createApi({ baseUrl, token }: { baseUrl: string; token: string }
     async updateNote(input) {
       const res = await fetch(`${baseUrl}/update-note`, { method: 'PATCH', headers, body: JSON.stringify(input) });
       return { status: res.status, body: await res.json() };
+    },
+    async shareNote({ noteId, userId }) {
+      const res = await fetch(`${baseUrl}/share-note`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ note_id: noteId, user_id: userId }),
+      });
+      if (!res.ok) throw new Error(`share-note failed: ${res.status}`);
+      return res.json();
     },
   };
 }

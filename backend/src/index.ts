@@ -10,6 +10,8 @@ import { handler as listNotes } from './functions/list-notes';
 import { handler as getNote } from './functions/get-note';
 import { handler as updateNote } from './functions/update-note';
 import { handler as summarizeNote } from './functions/summarize-note';
+import { handler as shareNote } from './functions/share-note';
+import { handler as getSharedNote } from './functions/get-shared-note';
 
 type Handler = (req: Request) => Promise<Response>;
 
@@ -18,6 +20,8 @@ export const routes: Record<string, Handler> = {
   '/get-note': getNote,
   '/update-note': updateNote,
   '/summarize-note': summarizeNote,
+  '/share-note': shareNote,
+  '/get-shared-note': getSharedNote,
 };
 
 export async function handle(req: Request): Promise<Response> {
