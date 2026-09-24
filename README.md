@@ -22,6 +22,8 @@ npm install
 npm run ex1
 ```
 
+The first run takes a while; it is compiling React Native. After that it is quick.
+
 ## How the session works
 
 About an hour. The exercises are independent and each has a time limit. When I call time,
