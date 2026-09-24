@@ -2,12 +2,18 @@
   "name": "reactnative-interview",
   "private": true,
   "version": "1.0.0",
-  "workspaces": ["backend", "mobile", "web"],
-  "engines": { "node": ">=20" },
+  "workspaces": [
+    "backend",
+    "mobile",
+    "web"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "test": "npm test --workspaces",
-    "ex1": "npm test --workspaces -- ex1-",
-    "ex2": "npm test --workspaces -- ex2-",
-    "bonus": "npm test --workspaces -- bonus-"
+    "test": "npm test --workspaces --silent",
+    "ex1": "npm test -w mobile --silent -- ex1-",
+    "ex2": "npm test --workspaces --silent -- ex2-",
+    "bonus": "npm test --workspaces --silent -- bonus-"
   }
 }
