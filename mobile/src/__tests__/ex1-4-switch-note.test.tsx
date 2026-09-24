@@ -4,6 +4,10 @@
  * On a device: open a note. While it is open, tap a notification for a different
  * note. The editor's title and content still show the first note.
  *
+ * In the real app the editor is a stack screen, and a notification deep link for
+ * another note changes its param without remounting it. This exercise has no
+ * navigator, so the test drives the prop change directly.
+ *
  * Where: mobile/src/screens/NoteEditorScreen.tsx
  */
 import React from 'react';
