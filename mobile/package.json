@@ -2,7 +2,7 @@
   "name": "mobile",
   "private": true,
   "version": "1.0.0",
-  "scripts": { "test": "jest" },
+  "scripts": { "test": "jest --passWithNoTests" },
   "dependencies": {
     "react": "18.3.1",
     "react-native": "0.76.5"

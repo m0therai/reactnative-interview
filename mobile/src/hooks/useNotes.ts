@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { ApiClient } from '../api/client';
 import type { Note } from '../types';
+import { useAppForeground } from './useAppForeground';
 
 const REFRESH_MS = 30_000;
 
@@ -11,8 +12,9 @@ function matches(note: Note, query: string) {
 }
 
 /**
- * Loads the user's notes, filters them by a search query, and refreshes them
- * in the background every 30 seconds.
+ * Loads the user's notes, filters them by a search query, and refreshes them in
+ * the background: every 30 seconds, and whenever the app comes back to the
+ * foreground.
  */
 export function useNotes(api: ApiClient) {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -40,6 +42,8 @@ export function useNotes(api: ApiClient) {
     const id = setInterval(load, REFRESH_MS);
     return () => clearInterval(id);
   }, []);
+
+  useAppForeground(load);
 
   return { notes, query, setQuery, loading, error, refresh: load };
 }

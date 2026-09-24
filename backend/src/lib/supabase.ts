@@ -21,7 +21,6 @@ const RLS_TABLES = new Set(['notes']);
 
 const tables: Record<string, Row[]> = {
   notes: [],
-  note_shares: [],
 };
 
 class QueryBuilder<T = Row> implements PromiseLike<Result<any>> {

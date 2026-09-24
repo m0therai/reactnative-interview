@@ -30,11 +30,10 @@ export function NoteEditor({ api, note: initial, onSaved }: Props) {
         setMessage('Saved');
         onSaved?.(saved);
       } else if (status === 409 && 'current' in body && body.current) {
-        // Someone else saved this note first. Reload it.
+        // Someone else saved this note first. Keep what the user typed and move the
+        // editor on to the server's version, so the next Save is an explicit overwrite.
         setNote(body.current);
-        setTitle(body.current.title);
-        setContent(body.current.content);
-        setMessage('This note was changed elsewhere and has been reloaded.');
+        setMessage(`This note was changed elsewhere (now v${body.current.version}). Your text is kept; save again to overwrite it.`);
       } else {
         setMessage('Save failed. Please try again.');
       }

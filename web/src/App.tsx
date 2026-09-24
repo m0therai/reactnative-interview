@@ -1,16 +1,15 @@
-import { useMemo, useState } from 'react';
-import { createApi } from './api/client';
+import { useState } from 'react';
+import type { ApiClient } from './api/client';
 import { NoteEditor } from './components/NoteEditor';
 import { NotesList } from './components/NotesList';
 import type { Note } from './types';
 
 /**
- * Root of the web app. There is no bundler in this exercise, so this file is
- * here to show how the pieces fit together; the tests exercise the components
- * directly.
+ * Root of the web app. There is no bundler in this exercise; the entry point would
+ * build the client with `createApi` and render `<App api={api} />`. The tests pass
+ * a fake client in.
  */
-export function App({ baseUrl, token }: { baseUrl: string; token: string }) {
-  const api = useMemo(() => createApi({ baseUrl, token }), [baseUrl, token]);
+export function App({ api }: { api: ApiClient }) {
   const [open, setOpen] = useState<Note | null>(null);
 
   return (

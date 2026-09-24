@@ -6,11 +6,12 @@ Supabase-style edge functions. All three talk to the same notes API.
 ```
 mobile/    React Native (Jest + React Native Testing Library)
 web/       React (Jest + Testing Library)
-backend/   Edge functions: plain (Request) => Response handlers, in-memory Supabase stand-in
+backend/   Edge functions: plain (Request) => Response handlers, in-memory database stand-in
 ```
 
-There is **no app to run**. No simulator, no browser, no Supabase CLI. Jest is the harness
-for everything. Each package has its own tests; the root scripts run them per exercise.
+**There is no app to run.** No simulator, no browser, no Supabase. The tests are the
+interface: each exercise has tests that fail until it is done, and each failing test says
+what the user would see.
 
 ## Setup
 
@@ -18,87 +19,72 @@ Node 20 or newer.
 
 ```bash
 npm install
-npm test          # runs every suite in all three packages
+npm run ex1
 ```
 
-Some suites fail on a fresh checkout. That is the point: each exercise below tells you which.
+## How the session works
 
-## Ground rules
+About an hour. The exercises are independent and each has a time limit. When I call time,
+move on. Talk through what you are doing as you go; I am watching, not helping.
 
-- **Done means code you would merge to production.** Green tests are the floor, not the
-  finish line. We review your submission the way we would review a pull request. If a
-  test passes but the behaviour is wrong, that counts against you, not for you.
-- **Record assumptions in `NOTES.md`.** If a requirement could be read more than one way,
-  write down which reading you chose and why. A short line is enough.
-- **Commit as you go.** One commit per exercise at minimum, one per finding in Exercise 3. We read the history.
-- **Don't edit the tests** unless an exercise tells you to.
-- Exercise 1 is done without AI tools. Every other exercise, use whatever you normally use.
-- Talk through what you're doing as you go.
+At the end I will ask you to zip the folder (without `node_modules`) or push it to a
+private repo of your own. Do not push to this repo.
 
-## Exercise 1: fix the mobile app (no AI)
+## Exercise 1: five bugs, no AI (20 minutes)
 
-Three things are broken in `mobile/`. The failing tests describe the symptoms.
+Five bugs in the mobile app, easiest first. Each has one failing test that describes
+what the user sees, and each test file starts with how to reproduce it on a device.
 
 ```bash
 npm run ex1
 ```
 
-Make the tests pass. Each fix is a few lines.
+| # | What the user sees | Where |
+|---|---|---|
+| 1 | Title edits are lost | `mobile/src/screens/NoteEditorScreen.tsx` |
+| 2 | The app crashes when there are no notes | `mobile/src/screens/NotesListScreen.tsx` |
+| 3 | Notes refresh twice after reopening the list | `mobile/src/hooks/useAppForeground.ts` |
+| 4 | Opening a second note shows the first one | `mobile/src/screens/NoteEditorScreen.tsx` |
+| 5 | The search filter disappears after 30 seconds | `mobile/src/hooks/useNotes.ts` |
 
-## Exercise 2: offline edits (AI allowed)
+No AI tools for this one. Don't edit the tests.
 
-Edits must sync across devices without losing anyone's work.
+## Exercise 1B: check your work, with AI (10 minutes)
 
-The mobile app already queues edits made while offline (`mobile/src/offline/queue.ts`).
-Nothing pushes that queue to the server yet.
+Now use your AI tool. Have it check your exercise 1 fixes, and fix anything you did not get to.
 
-- **Mobile:** implement `syncQueuedEdits` in `mobile/src/offline/sync.ts`. It runs when
-  connectivity returns and must be safe to call repeatedly.
-- **Web:** `web/src/components/NoteEditor.tsx` loses what the user typed if the note was
-  changed on another device while they were editing. It must not.
+When you're done, tell me what it changed and whether you agree with it.
+
+## Exercise 2: add "New note" (20 minutes, AI allowed)
+
+The app can only edit notes that already exist. Add creating one, end to end.
+
+- **Backend:** `backend/src/functions/create-note.ts` is a stub. It takes a title and
+  content and returns the new note. A note with no title and no content is rejected.
+- **Mobile:** a "New note" button on the list opens the editor empty. Save creates the
+  note. Back on the list, the new note is at the top straight away.
+- **Web:** the same.
+
+The API clients already have `createNote`. The tests say which buttons they look for.
 
 ```bash
 npm run ex2
 ```
 
-Before you write or generate any code, produce a plan and walk us through it. Then build it.
-The tests cover the basics. They do not cover everything the requirement implies.
+When you're done, walk me through what changed in each of the three places.
 
-## Exercise 3: make the share-note branch mergeable
+## Bonus: search on the server (10 minutes, AI allowed)
 
-Someone ran an AI agent on this repo overnight and it produced the `feature/share-note`
-branch: share a note with anyone via a link, across backend, mobile and web. Its tests pass.
+Search happens on the phone today: the app downloads every note and filters locally.
+Move it to the backend.
 
-```bash
-git checkout feature/share-note
-npm run ex3
-```
-
-The branch was cut from the original `main`, so your Exercise 1 and 2 work is not on it and
-those suites still fail there. Only `npm run ex3` matters on this branch.
-
-Treat it as a pull request to production that has landed on your desk.
-
-- Fix what you would insist on before merging. **One commit per finding.** The commit message
-  says what was wrong and why it matters.
-- Add the tests that should have been there.
-- Anything you noticed but chose not to fix, say so out loud.
-- If you would reject the branch outright, say that and why.
-
-## Exercise 4 (bonus): fix the summarization function
-
-`backend/src/functions/summarize-note.ts` calls an LLM to summarize a note. The
-configuration and prompt have problems. The tests mock the SDK and check what your code
-sends to it.
+- **Backend:** `list-notes` takes a `q` parameter and returns only matching notes.
+- **Mobile:** the notes hook sends the query to the server instead of filtering. Typing
+  should not send a request on every keystroke.
+- **Web:** add a search box to the list that does the same.
 
 ```bash
-npm run ex4
+npm run bonus
 ```
 
-Be ready to explain your choices: model, temperature, prompt structure, and how you handle
-a bad response.
-
-## Submitting
-
-When we stop, push everything (all branches) to a **private** repo and share access, or
-zip the folder without `node_modules` and send it over. Do not push to this repo.
+When you're done, tell me why you would want this on the server rather than the client.

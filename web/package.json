@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "react": "18.3.1",

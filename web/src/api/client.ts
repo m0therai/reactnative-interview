@@ -1,5 +1,7 @@
 import type { Note } from '../types';
 
+export type CreateNoteInput = { title: string; content: string };
+
 export type UpdateNoteInput = {
   id: string;
   title?: string;
@@ -10,8 +12,10 @@ export type UpdateNoteInput = {
 export type ApiResponse<T> = { status: number; body: T };
 
 export type ApiClient = {
-  listNotes(): Promise<Note[]>;
+  /** All of the user's notes, newest first. `query` is only used once search moves to the server (bonus). */
+  listNotes(query?: string): Promise<Note[]>;
   getNote(id: string): Promise<Note>;
+  createNote(input: CreateNoteInput): Promise<Note>;
   updateNote(input: UpdateNoteInput): Promise<ApiResponse<Note | { error: string; current?: Note }>>;
 };
 
@@ -23,14 +27,20 @@ export function createApi({ baseUrl, token }: { baseUrl: string; token: string }
   const headers = { authorization: `Bearer ${token}`, 'content-type': 'application/json' };
 
   return {
-    async listNotes() {
-      const res = await fetch(`${baseUrl}/list-notes`, { headers });
+    async listNotes(query) {
+      const qs = query ? `?q=${encodeURIComponent(query)}` : '';
+      const res = await fetch(`${baseUrl}/list-notes${qs}`, { headers });
       if (!res.ok) throw new Error(`list-notes failed: ${res.status}`);
       return res.json();
     },
     async getNote(id) {
       const res = await fetch(`${baseUrl}/get-note?id=${encodeURIComponent(id)}`, { headers });
       if (!res.ok) throw new Error(`get-note failed: ${res.status}`);
+      return res.json();
+    },
+    async createNote(input) {
+      const res = await fetch(`${baseUrl}/create-note`, { method: 'POST', headers, body: JSON.stringify(input) });
+      if (!res.ok) throw new Error(`create-note failed: ${res.status}`);
       return res.json();
     },
     async updateNote(input) {

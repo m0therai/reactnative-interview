@@ -6,12 +6,8 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "npm test --workspaces",
-    "test:backend": "npm test -w backend --",
-    "test:mobile": "npm test -w mobile --",
-    "test:web": "npm test -w web --",
-    "ex1": "npm test -w mobile -- ex1",
-    "ex2": "npm test -w mobile -- ex2 && npm test -w web -- ex2",
-    "ex3": "npm test -w backend -- ex3 && npm test -w mobile -- ex3 && npm test -w web -- ex3",
-    "ex4": "npm test -w backend -- ex4"
+    "ex1": "npm test --workspaces -- ex1-",
+    "ex2": "npm test --workspaces -- ex2-",
+    "bonus": "npm test --workspaces -- bonus-"
   }
 }
